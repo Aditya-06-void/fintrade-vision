@@ -85,20 +85,30 @@ export default function Dashboard() {
     );
   }
 
-  const quote = companyData["Global Quote"];
-  const isPositive = parseFloat(quote["09. change"]) >= 0;
+  const quote = companyData?.["Global Quote"] ?? ({} as any);
+  const price = parseFloat(quote?.["05. price"] ?? "NaN");
+  const change = parseFloat(quote?.["09. change"] ?? "NaN");
+  const changePct = quote?.["10. change percent"] ?? "N/A";
+  const openVal = parseFloat(quote?.["02. open"] ?? "NaN");
+  const highVal = parseFloat(quote?.["03. high"] ?? "NaN");
+  const lowVal = parseFloat(quote?.["04. low"] ?? "NaN");
+  const volumeVal = parseInt(quote?.["06. volume"] ?? "NaN");
+  const prevCloseVal = parseFloat(quote?.["08. previous close"] ?? "NaN");
+  const latestDay = quote?.["07. latest trading day"] ?? "-";
+  const symbol = quote?.["01. symbol"] ?? "N/A";
+  const isPositive = isNaN(change) ? true : change >= 0;
 
   return (
     <div className="space-y-6">
       {/* Company Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">{quote["01. symbol"]}</h1>
+          <h1 className="text-3xl font-bold">{symbol}</h1>
           <p className="text-muted-foreground">International Business Machines Corporation</p>
         </div>
         <Badge variant={isPositive ? "default" : "destructive"}>
           {isPositive ? <TrendingUp className="h-4 w-4 mr-1" /> : <TrendingDown className="h-4 w-4 mr-1" />}
-          {quote["10. change percent"]}
+          {changePct}
         </Badge>
       </div>
 
@@ -109,9 +119,9 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium">Current Price</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${parseFloat(quote["05. price"]).toFixed(2)}</div>
+            <div className="text-2xl font-bold">{isNaN(price) ? 'N/A' : `$${price.toFixed(2)}`}</div>
             <p className={`text-sm ${isPositive ? 'text-success' : 'text-destructive'}`}>
-              {quote["09. change"]} ({quote["10. change percent"]})
+              {isNaN(change) ? '—' : change.toFixed(2)} ({changePct})
             </p>
           </CardContent>
         </Card>
@@ -121,7 +131,7 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium">Open</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${parseFloat(quote["02. open"]).toFixed(2)}</div>
+            <div className="text-2xl font-bold">{isNaN(openVal) ? 'N/A' : `$${openVal.toFixed(2)}`}</div>
           </CardContent>
         </Card>
 
@@ -131,7 +141,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-lg font-bold">
-              ${parseFloat(quote["03. high"]).toFixed(2)} / ${parseFloat(quote["04. low"]).toFixed(2)}
+              {isNaN(highVal) || isNaN(lowVal) ? 'N/A' : `$${highVal.toFixed(2)} / $${lowVal.toFixed(2)}`}
             </div>
           </CardContent>
         </Card>
@@ -142,7 +152,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {parseInt(quote["06. volume"]).toLocaleString()}
+              {isNaN(volumeVal) ? 'N/A' : volumeVal.toLocaleString()}
             </div>
           </CardContent>
         </Card>
@@ -153,7 +163,7 @@ export default function Dashboard() {
         <CardHeader>
           <CardTitle>Price Chart (5-minute intervals)</CardTitle>
           <CardDescription>
-            Latest trading day: {quote["07. latest trading day"]}
+            Latest trading day: {latestDay}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -213,11 +223,11 @@ export default function Dashboard() {
         <CardContent className="space-y-2">
           <div className="flex justify-between">
             <span className="font-medium">Previous Close:</span>
-            <span>${parseFloat(quote["08. previous close"]).toFixed(2)}</span>
+            <span>{isNaN(prevCloseVal) ? 'N/A' : `$${prevCloseVal.toFixed(2)}`}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Latest Trading Day:</span>
-            <span>{quote["07. latest trading day"]}</span>
+            <span>{latestDay}</span>
           </div>
         </CardContent>
       </Card>

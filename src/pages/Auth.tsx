@@ -49,9 +49,6 @@ export default function Auth() {
     mode: "onChange",
   });
 
-  // Debug logging
-  console.log("SignUp form values:", signUpForm.watch());
-  console.log("Form errors:", signUpForm.formState.errors);
 
   useEffect(() => {
     if (user) {
