@@ -46,7 +46,12 @@ export default function Auth() {
       phone: "",
       password: "",
     },
+    mode: "onChange",
   });
+
+  // Debug logging
+  console.log("SignUp form values:", signUpForm.watch());
+  console.log("Form errors:", signUpForm.formState.errors);
 
   useEffect(() => {
     if (user) {
@@ -106,7 +111,11 @@ export default function Auth() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your email" type="email" {...field} />
+                        <Input 
+                          placeholder="Enter your email" 
+                          type="email" 
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
