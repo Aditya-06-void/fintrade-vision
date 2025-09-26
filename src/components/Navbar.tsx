@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -24,11 +25,11 @@ const Navbar = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm">
-              Login
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/auth">Login</Link>
             </Button>
-            <Button size="sm" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
-              Get Started
+            <Button size="sm" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70" asChild>
+              <Link to="/auth">Get Started</Link>
             </Button>
           </div>
         </div>
